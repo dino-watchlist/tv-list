@@ -1,0 +1,33 @@
+name: Update IPTV Playlist
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'  # Runs every 30 minutes
+  workflow_dispatch:        # Allows you to click "Run Now" manually
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write       # Required to save the file back to the repo
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Run Conversion Script
+        env:
+          JSON_SOURCE_URL: ${{ secrets.JSON_SOURCE_URL }}
+        run: python convert.py
+
+      - name: Commit and Push Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Auto-update playlist [skip ci]"
+          file_pattern: 'playlist.m3u'
