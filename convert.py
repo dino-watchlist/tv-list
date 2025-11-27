@@ -11,7 +11,7 @@ def update_playlist():
         print("Error: JSON_SOURCE_URL environment variable not found.")
         return
 
-    output_file = 'playlist.m3u'
+    output_file = 'list.m3u'
 
     try:
         # 2. Fetch JSON data from the web
